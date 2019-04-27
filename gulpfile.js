@@ -63,7 +63,7 @@ gulp.task('nodemon', ['sass', 'concatScripts'], function(done) {
 
 // creates our minified sass file, writes it to the build folder
 gulp.task('sass', function() {
-  return gulp.src('public/assets/sass/styles.sass')
+  return gulp.src('public/assets/scss/styles.scss')
   .pipe(maps.init())
   .pipe(sass())
   .pipe(autoprefixer({
