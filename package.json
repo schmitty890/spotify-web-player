@@ -1,0 +1,58 @@
+{
+  "name": "spotify-web-player",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "gulp",
+    "testz": "mocha || exit 0",
+    "test": "nyc --reporter=text mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schmitty890/spotify-web-player.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/schmitty890/spotify-web-player/issues"
+  },
+  "homepage": "https://github.com/schmitty890/spotify-web-player#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.19.0",
+    "chalk": "^2.4.2",
+    "connect-mongo": "^2.0.3",
+    "crypto": "^1.0.1",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "express-flash": "0.0.2",
+    "express-handlebars": "^3.0.2",
+    "express-session": "^1.16.1",
+    "express-validator": "^5.3.1",
+    "fs": "0.0.1-security",
+    "gulp": "^3.9.1",
+    "lusca": "^1.6.1",
+    "mongoose": "^5.5.4",
+    "passport": "^0.4.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "browser-sync": "^2.26.5",
+    "gulp-autoprefixer": "^6.1.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-nodemon": "^2.4.2",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
+    "gulp-util": "^3.0.8",
+    "run-sequence": "^2.2.1"
+  }
+}
