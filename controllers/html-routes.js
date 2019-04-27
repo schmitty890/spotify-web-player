@@ -17,17 +17,17 @@ module.exports = function (app) {
     };
     console.log(hbsObject);
     // console.log(hbsObject);
-    res.render('pages/signin', {
+    res.render('index', {
       hbsObject: hbsObject
     });
   });
 
-  // Styleguide Page
-  app.get('/styleguide', function (req, res) {
+  // Sign in Page
+  app.get('/signin', function (req, res) {
     var hbsObject = {
       user: req.user
     };
-    res.render('index', {
+    res.render('pages/signin', {
       hbsObject: hbsObject
     });
   });

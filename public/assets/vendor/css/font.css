@@ -1,5 +1,5 @@
 /*custom*/
-@font-face{
+/*@font-face{
 	font-family:'Poppins';
 	src:url('../fonts/poppins/400.eot');
 	src:url('../fonts/poppins/400.eot?#iefix') format('embedded-opentype'),
@@ -21,7 +21,7 @@
 	url('../fonts/poppins/700.svg#embed-poppins') format('svg');
 	font-weight: 700;
 	font-style: normal;
-}
+}*/
 
 .navbar-brand,
 .display-1,
