@@ -32,4 +32,14 @@ module.exports = function (app) {
     });
   });
 
+  // Sign in Page
+  app.get('/signup', function (req, res) {
+    var hbsObject = {
+      user: req.user
+    };
+    res.render('pages/signup', {
+      hbsObject: hbsObject
+    });
+  });
+
 }
