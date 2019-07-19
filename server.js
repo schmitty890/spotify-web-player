@@ -2,29 +2,36 @@
  * Module dependencies.
  */
 const express = require('express');
-const bodyParser = require('body-parser');
-const chalk = require('chalk');
-const path = require('path');
-const exphbs = require('express-handlebars');
-const fs = require('fs');
-// const dotenv = require('dotenv').config();
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const compression = require('compression');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const passport = require('passport');
-const flash = require('express-flash');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const chalk = require('chalk');
+const errorHandler = require('errorhandler');
 const lusca = require('lusca');
+const dotenv = require('dotenv');
+const MongoStore = require('connect-mongo')(session);
+const flash = require('express-flash');
+const path = require('path');
+const mongoose = require('mongoose');
+const passport = require('passport');
 const expressValidator = require('express-validator');
+const expressStatusMonitor = require('express-status-monitor');
+const sass = require('node-sass-middleware');
+const multer = require('multer');
+const exphbs = require('express-handlebars');
+const _ = require('lodash');
+const upload = multer({ dest: path.join(__dirname, 'uploads') });
+const momentFromNowTime = require('./views/helpers/momentFromNowTime');
+
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-// dotenv.load({ path: '.env' });
+dotenv.load({ path: '.env' });
 
 // require models
 var db = require("./models");
-
 
 /**
  * Create Express server.
@@ -35,12 +42,35 @@ const app = express();
  * Connect to MongoDB.
  */
 var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/spotifywebplayer';
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI, { useCreateIndex: true, useNewUrlParser: true });
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
   process.exit();
 });
+
+/**
+ * Express configuration.
+ */
+app.set('host', process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0');
+app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
+app.set('views', path.join(__dirname, 'views'));
+app.engine('handlebars', exphbs({
+  defaultLayout: 'main',
+  helpers: {
+    momentFromNowTime: momentFromNowTime
+  }
+}));
+app.set('view engine', 'handlebars');
+app.use(expressStatusMonitor());
+app.use(compression());
+app.use(sass({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public')
+}));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(session({
   resave: true,
@@ -76,56 +106,39 @@ app.use((req, res, next) => {
   }
   next();
 });
-
-
-/**
- * Express configuration.
- */
-// set port to 8888
-app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-// set the path read the views folder that holds the handlebar html templates
-app.set('views', path.join(__dirname, 'views'));
-
-// set the teplating engine to render handlebars with default layout and any custom handlebar helper functions
-app.engine('handlebars', exphbs({
-  defaultLayout: 'main'
-}));
-// set the view engine to handlebars
-app.set('view engine', 'handlebars');
-
-// read the build folder when server is running
 app.use('/build', express.static(__dirname + '/build'));
-app.use('/public', express.static(__dirname + '/public'));
+app.use("/public", express.static(__dirname + "/public"));
 
-/**
- * Get all routes
- */
+// get all routes
 require('./controllers/html-routes.js')(app);
-// require('./controllers/auth-routes.js')(app);
+require('./controllers/auth-routes.js')(app);
+require('./controllers/api-routes.js')(app);
 
-/**
- * show 404 page if no route has been hit
- */
+
+
+// show 404 page if no route has been hit
 app.get('*', function(req, res) {
-  res.render('404');
+  const hbsObject = {
+    user: req.user
+  }
+  res.render('404', {
+    title: '404',
+    hbsObject: hbsObject
+  });
 });
 
-// module.exports = {
-//   sayHello: function() {
-//     return 'hello1';
-//   },
-//   addNumbers: function(x, y) {
-//     return x + y;
-//   }
-// }
+/**
+ * Error Handler.
+ */
+if (process.env.NODE_ENV === 'development') {
+  // only use in development
+  app.use(errorHandler());
+}
 
 /**
  * Start Express server.
  */
-console.log('the process.env.PORT is: ' + app.get('port'));
 app.listen(app.get('port'), () => {
-  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('Success!'), app.get('port'), app.get('env'));
+  console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
   console.log('  Press CTRL-C to stop\n');
 });

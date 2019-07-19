@@ -81,10 +81,6 @@ var uiLoad = uiLoad || {};
 		style.onerror = function (e) {
 			deferred.reject(e);
 		};
-		// load primary theme
-		style.href = 'public/assets/vendor/css/theme/primary.css';
-		// console.log(style.href);
-
 		$document.head.appendChild(style);
 		loaded[href] = deferred;
 

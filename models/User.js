@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
+// Using the Schema constructor, create a new *Schema object
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
@@ -9,8 +11,21 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: Date,
   firstName: String,
   lastName: String,
-  teamName: String,
-  logo: String,
+  phone: String,
+  admin: Boolean,
+  rentAmount: String,
+  paid: Boolean,
+  unitNumber: String,
+  leaseStart: String,
+  leaseEnd: String,
+  adminVerified: Boolean,
+  // link to note model/table by using the ref and saving an obj id with it. it's an array of objects so that we can have many notes
+  notes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Note"
+    }
+  ],
   profile: {
     name: String,
     location: String,
