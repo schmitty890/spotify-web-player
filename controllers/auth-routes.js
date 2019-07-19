@@ -28,6 +28,23 @@ module.exports = function (app) {
   });
 
   /**
+   * GET /search
+   * Search page
+   * Ensure user is authenticated in passport first then render account page
+   */
+  app.get('/search', passportConfig.isAuthenticated, function(req, res) {
+    console.log('SUCCESS!!!!!!');
+    const hbsObject = {
+      user: req.user
+    }
+    console.log(hbsObject);
+    res.render('search', {
+      title: 'search',
+      hbsObject: hbsObject
+    });
+  });
+
+  /**
    * GET /player
    * Player page
    * Ensure user is authenticated in passport first then render account page
@@ -57,6 +74,93 @@ module.exports = function (app) {
     console.log(hbsObject);
     res.render('browse', {
       title: 'browse',
+      hbsObject: hbsObject
+    });
+  });
+
+  /**
+   * GET /spotify
+   * Spotify page
+   * Ensure user is authenticated in passport first then render account page
+   */
+  app.get('/spotify', passportConfig.isAuthenticated, function(req, res) {
+    var SpotifyWebApi = require('spotify-web-api-node');
+    // credentials are optional
+    var spotifyApi = new SpotifyWebApi({
+      clientId: 'd64a622709394715aac35e04674d865e',
+      clientSecret: 'dfa640a0c5324aef9823263b428890e5'
+    });
+
+    // console.log(spotifyApi);
+    // console.log('we here');
+
+    // const spotifyApi = new SpotifyWebApi({
+    //   clientId: 'myClientId',
+    //   clientSecret: 'myClientSecret',
+    //   redirectUri: 'myRedirectUri',
+    // });
+
+    // Set an access token.
+    // This is required as Spotify implemented a new auth flow since May 2017.
+    // See https://developer.spotify.com/news-stories/2017/01/27/removing-unauthenticated-calls-to-the-web-api/
+    spotifyApi.clientCredentialsGrant()
+      .then(function(data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+
+        // Save the access token so that it's used in future calls
+        spotifyApi.setAccessToken(data.body['access_token']);
+        // Get a user's playlists
+        spotifyApi.getUserPlaylists('schmitty890')
+          .then(function(data) {
+            console.log('Retrieved playlists', data.body);
+            // console.log(data.body.items);
+            console.log('--------------------------------');
+            // console.log(data.body)
+            // console.log(data.body.items);
+            // console.log(data.body.items[0].external_urls);
+          },function(err) {
+            console.log('Something went wrong!', err);
+          });
+
+          // // Add tracks to a playlist
+          // spotifyApi.addTracksToPlaylist('0TFs4Jvyajd6B8yW5o4mPs', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])
+          //   .then(function(data) {
+          //     console.log('Added tracks to playlist!');
+          //   }, function(err) {
+          //     console.log('Something went wrong!', err);
+          //   });
+
+      }, function(err) {
+        console.log('Something went wrong when retrieving an access token', err.message);
+      });
+
+
+      // spotifyApi.clientCredentialsGrant()
+      // .then(function(data) {
+      //   console.log('The access token expires in ' + data.body['expires_in']);
+      //   console.log('The access token is ' + data.body['access_token']);
+
+      //   // Save the access token so that it's used in future calls
+      //   spotifyApi.setAccessToken(data.body['access_token']);
+
+      //   // Add tracks to a playlist
+      //   spotifyApi.addTracksToPlaylist('0TFs4Jvyajd6B8yW5o4mPs', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])
+      //     .then(function(data) {
+      //       console.log('Added tracks to playlist!');
+      //     }, function(err) {
+      //       console.log('Something went wrong!', err);
+      //     });
+      // }, function(err) {
+      //   console.log('Something went wrong when retrieving an access token', err.message);
+      // });
+
+    // Continue making other calls to Spotify API as now access token will be sent.
+
+    const hbsObject = {
+      user: req.user
+    }
+    res.render('player', {
       hbsObject: hbsObject
     });
   });

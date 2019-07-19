@@ -65,6 +65,7 @@
     "pug": "^2.0.3",
     "request": "^2.85.0",
     "run-sequence": "^2.2.1",
+    "spotify-web-api-node": "^4.0.0",
     "stripe": "^5.10.0",
     "tumblr.js": "^1.1.1",
     "twilio": "^3.16.0",
