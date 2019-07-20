@@ -15,36 +15,41 @@
         }).done(function(data) {
           $('#search-result').removeClass('hide');
           console.log(data);
-    
           var html = `
     
           `;
-    
-          for(var i = 0; i < data.items.length; i++) {
-            html += `
-            <div class="col-xs-12 ${data.items[i].id}">
-              <div class="item r" data-id="item-5" data-src="http://streaming.radionomy.com/JamendoLounge">
-                <div class="item-media ">
-                  <a href="track.detail.html" class="item-media-content" style="background-image: url(${data.items[i].album.images[0].url});"></a>
-                </div>
-                <div class="item-info">
-                  <div class="item-title text-ellipsis">
-                    <a href="track.detail.html">${data.items[i].name}</a>
-                  </div>
-                  <div class="item-author text-sm text-ellipsis ">
-                    <a href="artist.detail.html" class="text-muted">${data.items[i].artists[0].name}</a>
-                  </div>
-                  <div class="item-action m-b" style="margin-top: 10px;">
-                    <span spotify-song-id='${data.items[i].id}' class="btn btn-sm rounded primary add-to-playlist">Add to playlist</span>
-                    <span class="btn btn-sm rounded white">More info</span>
-                  </div>
-                  <div class="item-meta text-sm text-muted">
+
+          if(data.statusCode === 401) {
+            //   console.log('tell jason to refresh the token');
+              html += `<div>Tell Jason to refresh the token!</div>`;
+          }else {
+            for(var i = 0; i < data.items.length; i++) {
+                html += `
+                <div class="col-xs-12 ${data.items[i].id}">
+                  <div class="item r" data-id="item-5" data-src="http://streaming.radionomy.com/JamendoLounge">
+                    <div class="item-media ">
+                      <a href="track.detail.html" class="item-media-content" style="background-image: url(${data.items[i].album.images[0].url});"></a>
+                    </div>
+                    <div class="item-info">
+                      <div class="item-title text-ellipsis">
+                        <a href="track.detail.html">${data.items[i].name}</a>
                       </div>
+                      <div class="item-author text-sm text-ellipsis ">
+                        <a href="artist.detail.html" class="text-muted">${data.items[i].artists[0].name}</a>
+                      </div>
+                      <div class="item-action m-b" style="margin-top: 10px;">
+                        <span spotify-song-id='${data.items[i].id}' class="btn btn-sm rounded primary add-to-playlist">Add to playlist</span>
+                        <span class="btn btn-sm rounded white">More info</span>
+                      </div>
+                      <div class="item-meta text-sm text-muted">
+                          </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            `;
+                `;
+              }
           }
+    
           $('#song-results').html(html);
         })
       });

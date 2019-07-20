@@ -72,6 +72,7 @@ module.exports = function (app) {
 
           }, function(err) {
             console.log('Something went wrong!', err);
+            res.send('Oh No! Tell Jason to refresh the token!');
           });
 
       }, function(err) {
@@ -340,6 +341,7 @@ spotifyApi.searchTracks('Ransom')
           res.json(data.body.tracks);
         }, function(err) {
           console.error(err);
+          res.json(err);
         });
 
       }, function(err) {
