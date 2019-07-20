@@ -22,7 +22,7 @@
     
           for(var i = 0; i < data.items.length; i++) {
             html += `
-            <div class="col-xs-12">
+            <div class="col-xs-12 ${data.items[i].id}">
               <div class="item r" data-id="item-5" data-src="http://streaming.radionomy.com/JamendoLounge">
                 <div class="item-media ">
                   <a href="track.detail.html" class="item-media-content" style="background-image: url(${data.items[i].album.images[0].url});"></a>
@@ -65,7 +65,42 @@
           url: "/spotify-add-to-playlist",
           data: data
         }).done(function(data) {
-          console.log(data);
+            console.log(data);
+            $('.' + data).find('.add-to-playlist').text('Added!');
+        })
+      });
+
+
+      // when users click add to playlist button, send the song id to spotify api to add to our playlist
+      $(document).on('click', '.delete-this-song', function(e) {
+        e.preventDefault();
+        console.log('remove from playlist');
+        var data = {
+            info: $(this).attr('data-spotify-id')
+        }
+        console.log(data);
+    
+        $('.remove-from-playlist').attr('data-spotify-id', data.info);
+      });
+
+      // when users click add to playlist button, send the song id to spotify api to add to our playlist
+      $(document).on('click', '.remove-from-playlist', function(e) {
+        e.preventDefault();
+        console.log('remove from playlist');
+        var data = {
+            info: $(this).attr('data-spotify-id')
+        }
+        console.log(data);
+    
+        $.ajax({
+          method: "POST",
+          url: "/remove-from-playlist",
+          data: data
+        }).done(function(data) {
+            console.log('our data')
+            console.log(data);
+            $('.' + data).hide();
+        //   window.location.href = window.location.href;
         })
       });
   })(jQuery);

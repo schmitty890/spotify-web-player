@@ -9,6 +9,8 @@ const axios = require("axios");
 const randomBytesAsync = promisify(crypto.randomBytes);
 const passportConfig = require('../config/passport');
 
+
+
 module.exports = function (app) {
 
   /**
@@ -26,6 +28,102 @@ module.exports = function (app) {
       title: 'profile',
       hbsObject: hbsObject
     });
+  });
+
+  /**
+   * GET /playlist
+   * Playlist page
+   * Ensure user is authenticated in passport first then render account page
+   */
+  app.get('/playlist', passportConfig.isAuthenticated, function(req, res) {
+    console.log('SUCCESS!!!!!!');
+    const hbsObject = {
+      user: req.user
+    }
+
+    var SpotifyWebApi = require('spotify-web-api-node');
+    // credentials are optional
+    var spotifyApi = new SpotifyWebApi({
+      clientId: process.env.SPOTIFY_CLIENTID,
+      clientSecret: process.env.SPOTIFY_CLIENTSECRET
+    });
+
+    var authToken = process.env.SPOTIFY_TOKEN;
+    var myPlaylist = process.env.SPOTIFY_PLAYLIST;
+
+    spotifyApi.clientCredentialsGrant()
+      .then(function(data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+
+        // Save the access token so that it's used in future calls
+        spotifyApi.setAccessToken(authToken);
+
+        // Get a playlist
+        spotifyApi.getPlaylist(myPlaylist)
+          .then(function(data) {
+            // console.log('Some information about this playlist', data.body);
+            hbsObject.tracks = data.body.tracks;
+            console.log(hbsObject.tracks.items[0].track.album);
+            res.render('playlist', {
+              title: 'playlist',
+              hbsObject: hbsObject
+            });
+
+          }, function(err) {
+            console.log('Something went wrong!', err);
+          });
+
+      }, function(err) {
+        console.log('Something went wrong when retrieving an access token', err.message);
+      });
+  });
+
+  /**
+   * POST /remove-from-playlist
+   * Playlist page
+   * Ensure user is authenticated in passport first then render account page
+   */
+  app.post('/remove-from-playlist', passportConfig.isAuthenticated, function(req, res) {
+    console.log('SUCCESS!!!!!!');
+    const hbsObject = {
+      user: req.user
+    }
+
+    var SpotifyWebApi = require('spotify-web-api-node');
+    // credentials are optional
+    var spotifyApi = new SpotifyWebApi({
+      clientId: process.env.SPOTIFY_CLIENTID,
+      clientSecret: process.env.SPOTIFY_CLIENTSECRET
+    });
+
+    var authToken = process.env.SPOTIFY_TOKEN;
+    var myPlaylist = process.env.SPOTIFY_PLAYLIST;
+
+    spotifyApi.clientCredentialsGrant()
+      .then(function(data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+
+        // Save the access token so that it's used in future calls
+        spotifyApi.setAccessToken(authToken);
+
+
+        // Remove all occurrence of a track
+        var theTrackToRemove = req.body.info;
+        var tracks = [{ uri : `spotify:track:${theTrackToRemove}` }];
+        // var options = { snapshot_id : "0wD+DKCUxiSR/WY8lF3fiCTb7Z8X4ifTUtqn8rO82O4Mvi5wsX8BsLj7IbIpLVM9" };
+        spotifyApi.removeTracksFromPlaylist(myPlaylist, tracks)
+          .then(function(data) {
+            console.log('Tracks removed from playlist!');
+            res.send(theTrackToRemove);
+          }, function(err) {
+            console.log('Something went wrong!', err);
+          });
+
+          }, function(err) {
+            console.log('Something went wrong!', err);
+          });
   });
 
   /**
@@ -198,6 +296,7 @@ spotifyApi.searchTracks('Ransom')
       spotifyApi.addTracksToPlaylist(myPlaylist, ["spotify:track:" + req.body.info])
         .then(function(data) {
           console.log('Added tracks to playlist!');
+          res.json(req.body.info);
         }, function(err) {
           console.log('Something went wrong!', err);
         });
@@ -205,15 +304,6 @@ spotifyApi.searchTracks('Ransom')
       }, function(err) {
         console.log('Something went wrong when retrieving an access token', err.message);
       });
-
-
-
-    const hbsObject = {
-      user: req.user
-    }
-    res.render('player', {
-      hbsObject: hbsObject
-    });
   });
 
   /**
