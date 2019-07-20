@@ -108,6 +108,23 @@
         //   window.location.href = window.location.href;
         })
       });
+
+
+      //make api call to get current playing song info
+    //   setInterval(function(){
+    //     $.ajax({
+    //         method: "GET",
+    //         url: "/currently-playing"
+    //       }).done(function(data) {
+    //           console.log('our data');
+    //           console.log(data);
+    //         //   $('.' + data).hide();
+    //       //   window.location.href = window.location.href;
+    //       })          
+    //   }, 60000);
+
+
+
   })(jQuery);
   
   

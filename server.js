@@ -23,6 +23,8 @@ const exphbs = require('express-handlebars');
 const _ = require('lodash');
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 const momentFromNowTime = require('./views/helpers/momentFromNowTime');
+const millisToMinutesAndSeconds = require('./views/helpers/timeConversions');
+
 
 
 /**
@@ -58,7 +60,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({
   defaultLayout: 'main',
   helpers: {
-    momentFromNowTime: momentFromNowTime
+    momentFromNowTime: momentFromNowTime,
+    millisToMinutesAndSeconds: millisToMinutesAndSeconds
   }
 }));
 app.set('view engine', 'handlebars');

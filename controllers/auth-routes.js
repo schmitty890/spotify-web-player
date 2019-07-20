@@ -63,8 +63,8 @@ module.exports = function (app) {
         spotifyApi.getPlaylist(myPlaylist)
           .then(function(data) {
             // console.log('Some information about this playlist', data.body);
-            hbsObject.tracks = data.body.tracks;
-            console.log(hbsObject.tracks.items[0].track.album);
+            hbsObject.tracks = [...data.body.tracks.items].reverse();
+            // console.log(hbsObject.tracks[0].track);
             res.render('playlist', {
               title: 'playlist',
               hbsObject: hbsObject
@@ -79,6 +79,54 @@ module.exports = function (app) {
         console.log('Something went wrong when retrieving an access token', err.message);
       });
   });
+
+  /**
+   * GET /currently-playing
+   * Currently-playing endpoint
+   * Ensure user is authenticated in passport first then render account page
+   */
+  app.get('/currently-playing', passportConfig.isAuthenticated, function(req, res) {
+    console.log('SUCCESS!!!!!!');
+    const hbsObject = {
+      user: req.user
+    }
+
+    var SpotifyWebApi = require('spotify-web-api-node');
+    // credentials are optional
+    var spotifyApi = new SpotifyWebApi({
+      clientId: process.env.SPOTIFY_CLIENTID,
+      clientSecret: process.env.SPOTIFY_CLIENTSECRET
+    });
+
+    var authToken = process.env.SPOTIFY_TOKEN;
+    var myPlaylist = process.env.SPOTIFY_PLAYLIST;
+
+    spotifyApi.clientCredentialsGrant()
+      .then(function(data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+
+        // Save the access token so that it's used in future calls
+        spotifyApi.setAccessToken(authToken);
+
+          // Get information about current playing song for signed in user
+          spotifyApi.getMyCurrentPlaybackState({
+          })
+          .then(function(data) {
+            // Output items
+            console.log("Now Playing: ",data.body);
+            res.send(data.body);
+
+          }, function(err) {
+            console.log('Something went wrong!', err);
+          });
+
+          }, function(err) {
+            console.log('Something went wrong!', err);
+            res.send('Oh No! Tell Jason to refresh the token!');
+          });
+  });
+
 
   /**
    * POST /remove-from-playlist
