@@ -144,7 +144,7 @@
 
           //   window.location.href = window.location.href;
           })          
-      }, 50000);
+      }, 5000);
 
       $('.mejs-button').hide();
 
