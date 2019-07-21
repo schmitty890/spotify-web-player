@@ -4,5 +4,6 @@ module.exports = {
   StoryPost: require("./StoryPost"),
   Property: require("./Property"),
   Note: require("./Note"),
-  Faq: require("./FAQ")
+  Faq: require("./FAQ"),
+  LikedSong: require("./LikedSong")
 };

@@ -198,6 +198,7 @@
 .mejs-controls .mejs-button button {
 	margin: 0;
 	background-image: none;
+	display: none;  /* hiding for beach trip */
 }
 
 .btn-playpause{

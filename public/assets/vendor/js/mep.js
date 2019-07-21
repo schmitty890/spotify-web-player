@@ -915,17 +915,17 @@ window.mep = window.mep || {};
 
   $.extend( MediaElementPlayer.prototype, {
     buildmepbuffering: function(player, controls, layers, media) {
-      var t = this,
-      $container = player.container,
-      error =
-        $('<div class="mejs-overlay-error mejs-layer">'+
-          '<div class="mejs-error"></div>'+
-        '</div>')
-        .hide() // start out hidden
-        .appendTo(layers)
-        .on( 'click.mep', function() {
-        	$(this).hide();
-        })
+    //   var t = this,
+    //   $container = player.container,
+    //   error =
+    //     $('<div class="mejs-overlay-error mejs-layer">'+
+    //       '<div class="mejs-error"></div>'+
+    //     '</div>')
+    //     .hide() // start out hidden
+    //     .appendTo(layers)
+    //     .on( 'click.mep', function() {
+    //     	$(this).hide();
+    //     })
       ;
 
       // show/hide big play button

@@ -1,4 +1,4 @@
-  <div class="app dk" id="app">
+  <div class="app dk" id="app" data-dbid="{{hbsObject.user._id}}">
 
 <!-- ############ LAYOUT START-->
 
@@ -101,7 +101,7 @@
                             </div>
                             <div class="item-info">
                                 <div class="item-overlay bottom text-right">
-                                    <a href="#" class="btn-favorite"><i class="fa fa-heart-o"></i></a>
+                                    <a href="#" class="btn-favorite" data-spotify-track-id="{{this.track.id}}" data-spotify-song-title="{{this.track.name}}" data-spotify-image="{{this.track.album.images.[0].url}}"><i class="fa fa-heart-o"></i></a>
                                     <a href="#" class="btn-more" data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
                                     <div class="dropdown-menu pull-right black lt"></div>
                                 </div>

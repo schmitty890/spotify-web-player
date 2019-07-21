@@ -40,6 +40,7 @@ module.exports = function (app) {
     const hbsObject = {
       user: req.user
     }
+    console.log(hbsObject);
 
     var SpotifyWebApi = require('spotify-web-api-node');
     // credentials are optional
@@ -448,16 +449,44 @@ spotifyApi.searchTracks('Ransom')
     });
   });
 
-  // Route for saving a new property
-  app.post("/submit-property", passportConfig.isAuthenticated, function(req, res) {
-    console.log(req.body);
-    // Create a new Property and pass the req.body to the entry
-    db.Property.create(req.body)
+  // Endpoint for saving a liked song
+  app.post("/like-song", passportConfig.isAuthenticated, function(req, res) {
+    // console.log(req.body);
+    var newLikedSong = {
+      title: req.body.title,
+      songID: req.body.songID,
+      image: req.body.image,
+      user: req.user.firstName
+    }
+    // console.log(newLikedSong);
+    // Create a new liked song
+    db.LikedSong.create(newLikedSong)
       .then(function(dbProperty) {
         // If saved successfully, send the the new Property document to the client
         // res.json(dbProperty);
-        res.send('you saved a property!');
+        res.send('you saved a new song!');
         // res.redirect('/my-properties');
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+  });
+
+  // Endpoint for saving a liked song
+  app.post("/like-song-by-user", passportConfig.isAuthenticated, function(req, res) {
+    console.log(req.body);
+
+    // Create a new comment and pass the req.body to the entry
+    db.LikedSong.create(req.body)
+      .then(function(dbLike) {
+        // if like creation success, find like with req.body.user match, associate it with the comment body sent from app.js by pushing it to like array
+        // new true returns updated article
+        return db.User.findOneAndUpdate({ _id: req.body.user }, { $push: { likedSongs: dbLike._id } }, { new: true });
+      })
+      
+      .then(function(dbLike) {
+        // we were able to successfully update a Like, send it back, otherwise send the error
+        res.json(dbLike);
       })
       .catch(function(err) {
         res.json(err);

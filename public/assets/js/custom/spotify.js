@@ -111,17 +111,88 @@
 
 
       //make api call to get current playing song info
-    //   setInterval(function(){
-    //     $.ajax({
-    //         method: "GET",
-    //         url: "/currently-playing"
-    //       }).done(function(data) {
-    //           console.log('our data');
-    //           console.log(data);
-    //         //   $('.' + data).hide();
-    //       //   window.location.href = window.location.href;
-    //       })          
-    //   }, 60000);
+      setInterval(function(){
+        $.ajax({
+            method: "GET",
+            url: "/currently-playing"
+          }).done(function(data) {
+              console.log('our data');
+              console.log(data);
+            //   $('.' + data).hide();
+            $('.mejs-track-title a').text(data.item.name);
+            $('.mejs-track-author a').text(data.item.album.name);
+            $('.mejs-track-artwork').css('background-image', 'url(' + data.item.album.images[0].url + ')')
+            var millisToMinutesAndSeconds = function (millis) {
+                var minutes = Math.floor(millis / 60000);
+                var seconds = ((millis % 60000) / 1000).toFixed(0);
+                return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+            }
+            $('.mejs-currenttime').text(millisToMinutesAndSeconds(data.progress_ms));
+            $('.mejs-duration').text(millisToMinutesAndSeconds(data.item.duration_ms));
+            var totalSongTime = data.item.duration_ms;
+            var currentSongTime = data.progress_ms;
+            var percentPlayed = (currentSongTime / totalSongTime) * 100;
+            console.log(percentPlayed);
+            // $('.mejs-time-rail').css({'background': 'red'});
+            // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
+            $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
+            $('.mejs-time-rail').css({'background': '#02b875'});
+            // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
+
+            // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
+            // $('.mejs-time-rail').width(percentPlayed);
+
+          //   window.location.href = window.location.href;
+          })          
+      }, 50000);
+
+      $('.mejs-button').hide();
+
+
+
+
+
+      // when users click add to playlist button, send the song id to spotify api to add to our playlist
+      $(document).on('click', '.btn-favorite', function(e) {
+        e.preventDefault();
+        console.log('liked song!');
+        var data = {
+            title: $(this).attr('data-spotify-song-title'),
+            songID: $(this).attr('data-spotify-track-id'),
+            image: $(this).attr('data-spotify-image')
+        }
+    
+        $.ajax({
+          method: "POST",
+          url: "/like-song",
+          data: data
+        }).done(function(data) {
+            console.log('our data')
+            console.log(data);
+            // $('.' + data).hide();
+        //   window.location.href = window.location.href;
+        });
+
+        var dbId = $(this).data('dbid');
+        var data = {
+            user: $('#app').data('dbid'),
+            title: $(this).attr('data-spotify-song-title'),
+            songID: $(this).attr('data-spotify-track-id'),
+            image: $(this).attr('data-spotify-image')
+        }
+        // grab id from data attr, use ajax post method to send comment from text-input val to the article
+        $.ajax({
+            method: "POST",
+            url: "/like-song-by-user",
+            data: data
+            // then log it and empty the input box
+            }).done(function(data) {
+            console.log(data);
+            // $(this).html("Comment Saved")
+        });
+
+
+      });
 
 
 

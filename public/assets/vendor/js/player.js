@@ -43,13 +43,13 @@
     mepPlaylistTracks: [
       {
             "id": "item-1",
-            "title": "Pull Up",
+            "title": "Loading...",
             "except": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quamquam tu hanc copiosiorem etiam soles dicere. Nihil illinc huc pervenit.",
             "link": "track.detail.html",
             "thumb": { "src": "images/b0.jpg" },
             "src": "http://api.soundcloud.com/tracks/269944843/stream?client_id=a10d44d431ad52868f1bce6d36f5234c",
             "meta": {
-                "author": "Summerella",
+                "author": "Loading...",
                 "authorlink": "artist.detail.html",
                 "date": "30.05.2016",
                 "category": "Blue",

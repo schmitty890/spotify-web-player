@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
   leaseStart: String,
   leaseEnd: String,
   adminVerified: Boolean,
+  likedSongs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "LikedSong"
+    }
+  ],
   // link to note model/table by using the ref and saving an obj id with it. it's an array of objects so that we can have many notes
   notes: [
     {
