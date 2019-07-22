@@ -244,20 +244,8 @@
                     </div>
                 `
             }
+            $('#liked-song-count').text(data.likedSongs.length);
             $('#liked-songs-profile').append(html);
-            // $('.modal-title').html(data.title);
-            // $('.comment-display-root').empty();
-            // $('.save-comment-button').data('dbid', data._id);
-            // if (data.comments.length === 0) {
-            //   $('.comment-display-root').html("No comments yet. Be the first to comment!");
-            // } else {
-            //   for (var i = 0; i < data.comments.length; i++) {
-            //     var newCard = 
-            //       "<div class='card blue-grey darken-1'><div class='card-content white-text valign-wrapper'><p class='col s11 left-align'>" 
-            //       + data.comments[i].body + "</p><button class='col s1 btn delete-comment-button' data-dbid='" + data.comments[i]._id + "'>X</button></div></div>";
-            //     $('.comment-display-root').prepend(newCard);
-            //   }
-            // }
           });
       }, 3000);
 
