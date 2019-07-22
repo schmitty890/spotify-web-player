@@ -493,6 +493,19 @@ spotifyApi.searchTracks('Ransom')
       });
   });
 
+  // Route for grabbing liked songs by id
+  app.get("/liked-songs/:id", function(req, res) {
+    // Using the id passed in the id parameter, find it, populate it with its comments, send back json if successful/error if not
+    db.User.findOne({ _id: req.params.id })
+      .populate("likedSongs")
+      .then(function(dbLikedSong) {
+        res.json(dbLikedSong);
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+  });
+
   /**
    * GET /edit-property
    * edit-property page

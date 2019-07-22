@@ -872,7 +872,7 @@ window.mep = window.mep || {};
 
   $.extend( MediaElementPlayer.prototype, {
     buildmeplike: function( player, controls, layers ) {
-      var $like = layers.append( '<div class="mejs-track-actions"><button class="mejs-like-button btn btn-sm no-bg btn-icon"></button></div>' ).find( '.mejs-like-button' );
+      var $like = layers.append( '<div class="mejs-track-actions"><button class="btn-favorite mejs-like-button btn btn-sm no-bg btn-icon"></button></div>' ).find( '.mejs-like-button' );
       
       $like.click(function() {
           player.$node.trigger('like.mep', [$like.attr( 'track-id')] );

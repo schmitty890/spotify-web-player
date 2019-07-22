@@ -125,7 +125,7 @@
               } else { // if song is playing
                 //   $('.' + data).hide();
                 $('.mejs-track-title a').text(data.item.name);
-                $('.mejs-track-author a').text(data.item.album.name);
+                $('.mejs-track-author a').text(data.item.artists[0].name);
                 $('.mejs-track-artwork').css('background-image', 'url(' + data.item.album.images[0].url + ')')
                 var millisToMinutesAndSeconds = function (millis) {
                     var minutes = Math.floor(millis / 60000);
@@ -142,6 +142,12 @@
                 // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
                 $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
                 $('.mejs-time-rail').css({'background': '#02b875'});
+                $('.btn-favorite').attr('data-spotify-song-title', data.item.name);
+                $('.btn-favorite').attr('data-spotify-track-id', data.item.id);
+                $('.btn-favorite').attr('data-spotify-image', data.item.album.images[0].url);
+                // title: $(this).attr('data-spotify-song-title'),
+                // songID: $(this).attr('data-spotify-track-id'),
+                image: $(this).attr('data-spotify-image')
                 // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
 
                 // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
@@ -197,9 +203,64 @@
             console.log(data);
             // $(this).html("Comment Saved")
         });
-
-
       });
+
+
+      setTimeout(function() {
+        var dbId = $('#app').data('dbid');
+        //   $("#comment-input").val('');
+          $.ajax({
+            method: "GET",
+            url: "/liked-songs/" + dbId
+            // then, populate title, empty commend display root, add dbid attr to save comment button based on article dbid
+            // then, if no comments exists, populate no comments message. if comments exists, populate a card for each comment
+          }).done(function(data){
+            console.log(data);
+
+            var html = '';
+
+            for(var i = 0; i < data.likedSongs.length; i++) {
+                var createdAt = moment(data.likedSongs[i].createdAt).fromNow();
+                html += `
+                    <div class="col-xs-4 col-sm-4 col-md-3">
+                        <div class="item r" data-id="item-10" data-src="http://api.soundcloud.com/tracks/237514750/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
+                            <div class="item-media ">
+                                <a href="track.detail.html" class="item-media-content" style="background-image: url(${data.likedSongs[i].image});"></a>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title text-ellipsis">
+                                    <a href="track.detail.html">${data.likedSongs[i].title}</a>
+                                </div>
+                                <div class="item-title text-ellipsis">
+                                    <a href="track.detail.html">Liked ${createdAt}</a>
+                                </div>
+                                <div class="item-author text-sm text-ellipsis hide">
+                                    <a href="artist.detail.html" class="text-muted">Postiljonen</a>
+                                </div>
+                                <div class="item-meta text-sm text-muted">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+            $('#liked-songs-profile').append(html);
+            // $('.modal-title').html(data.title);
+            // $('.comment-display-root').empty();
+            // $('.save-comment-button').data('dbid', data._id);
+            // if (data.comments.length === 0) {
+            //   $('.comment-display-root').html("No comments yet. Be the first to comment!");
+            // } else {
+            //   for (var i = 0; i < data.comments.length; i++) {
+            //     var newCard = 
+            //       "<div class='card blue-grey darken-1'><div class='card-content white-text valign-wrapper'><p class='col s11 left-align'>" 
+            //       + data.comments[i].body + "</p><button class='col s1 btn delete-comment-button' data-dbid='" + data.comments[i]._id + "'>X</button></div></div>";
+            //     $('.comment-display-root').prepend(newCard);
+            //   }
+            // }
+          });
+      }, 3000);
+
 
 
 
