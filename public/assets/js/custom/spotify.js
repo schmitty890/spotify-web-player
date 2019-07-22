@@ -118,31 +118,38 @@
           }).done(function(data) {
               console.log('our data');
               console.log(data);
-            //   $('.' + data).hide();
-            $('.mejs-track-title a').text(data.item.name);
-            $('.mejs-track-author a').text(data.item.album.name);
-            $('.mejs-track-artwork').css('background-image', 'url(' + data.item.album.images[0].url + ')')
-            var millisToMinutesAndSeconds = function (millis) {
-                var minutes = Math.floor(millis / 60000);
-                var seconds = ((millis % 60000) / 1000).toFixed(0);
-                return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-            }
-            $('.mejs-currenttime').text(millisToMinutesAndSeconds(data.progress_ms));
-            $('.mejs-duration').text(millisToMinutesAndSeconds(data.item.duration_ms));
-            var totalSongTime = data.item.duration_ms;
-            var currentSongTime = data.progress_ms;
-            var percentPlayed = (currentSongTime / totalSongTime) * 100;
-            console.log(percentPlayed);
-            // $('.mejs-time-rail').css({'background': 'red'});
-            // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
-            $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
-            $('.mejs-time-rail').css({'background': '#02b875'});
-            // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
+            //   console.log(Object.keys(data).length);
+              if(Object.keys(data).length === 0) { // if no song is paying
+                $('.mejs-track-title a').text('no song is currently playing');
+                $('.mejs-track-author a').text('');
+              } else { // if song is playing
+                //   $('.' + data).hide();
+                $('.mejs-track-title a').text(data.item.name);
+                $('.mejs-track-author a').text(data.item.album.name);
+                $('.mejs-track-artwork').css('background-image', 'url(' + data.item.album.images[0].url + ')')
+                var millisToMinutesAndSeconds = function (millis) {
+                    var minutes = Math.floor(millis / 60000);
+                    var seconds = ((millis % 60000) / 1000).toFixed(0);
+                    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+                }
+                $('.mejs-currenttime').text(millisToMinutesAndSeconds(data.progress_ms));
+                $('.mejs-duration').text(millisToMinutesAndSeconds(data.item.duration_ms));
+                var totalSongTime = data.item.duration_ms;
+                var currentSongTime = data.progress_ms;
+                var percentPlayed = (currentSongTime / totalSongTime) * 100;
+                console.log(percentPlayed);
+                // $('.mejs-time-rail').css({'background': 'red'});
+                // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
+                $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
+                $('.mejs-time-rail').css({'background': '#02b875'});
+                // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
 
-            // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
-            // $('.mejs-time-rail').width(percentPlayed);
+                // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
+                // $('.mejs-time-rail').width(percentPlayed);
 
-          //   window.location.href = window.location.href;
+            //   window.location.href = window.location.href;
+              }
+
           })          
       }, 5000);
 
