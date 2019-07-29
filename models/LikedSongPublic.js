@@ -4,7 +4,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 // Using the Schema constructor, create a new *Schema object
-var LikedSongSchema = new Schema({
+var LikedSongPublicSchema = new Schema({
     user: {
         type: String
     },
@@ -20,7 +20,7 @@ var LikedSongSchema = new Schema({
 }, { timestamps: true });
 
 // This creates our model from the above schema, using mongoose's model method
-var LikedSong = mongoose.model("LikedSong", LikedSongSchema);
+var LikedSongPublic = mongoose.model("LikedSongPublic", LikedSongPublicSchema);
 
 // Export the Comment model
-module.exports = LikedSong;
+module.exports = LikedSongPublic;

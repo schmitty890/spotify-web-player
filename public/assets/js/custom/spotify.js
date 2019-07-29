@@ -141,9 +141,9 @@
                 // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
                 $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
                 $('.mejs-time-rail').css({'background': '#02b875'});
-                $('.btn-favorite').attr('data-spotify-song-title', data.item.name);
-                $('.btn-favorite').attr('data-spotify-track-id', data.item.id);
-                $('.btn-favorite').attr('data-spotify-image', data.item.album.images[0].url);
+                $('.btn-favorite.mejs-like-button').attr('data-spotify-song-title', data.item.name);
+                $('.btn-favorite.mejs-like-button').attr('data-spotify-track-id', data.item.id);
+                $('.btn-favorite.mejs-like-button').attr('data-spotify-image', data.item.album.images[0].url);
                 // title: $(this).attr('data-spotify-song-title'),
                 // songID: $(this).attr('data-spotify-track-id'),
                 image: $(this).attr('data-spotify-image')
@@ -203,6 +203,17 @@
             // $(this).html("Comment Saved")
         });
       });
+
+      //make api call to get current playing song info
+      setInterval(function(){
+        $.ajax({
+            method: "GET",
+            url: "/lastestLikedSongs"
+          }).done(function(data) {
+              console.log('our data');
+              console.log(data);
+          })
+      }, 5000);
 
 
       setTimeout(function() {

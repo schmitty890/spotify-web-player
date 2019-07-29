@@ -81,6 +81,17 @@ module.exports = function (app) {
       });
   });
 
+  app.get('/lastestLikedSongs', passportConfig.isAuthenticated, function(req, res) {
+    db.LikedSong.find({}, (err, song) => {
+      if (err) {
+        res.send(err);
+      }
+      res.json(song);
+    }).sort({ $natural: -1 }).limit(5);
+  });
+
+
+
   /**
    * GET /currently-playing
    * Currently-playing endpoint
@@ -460,7 +471,7 @@ spotifyApi.searchTracks('Ransom')
     }
     // console.log(newLikedSong);
     // Create a new liked song
-    db.LikedSong.create(newLikedSong)
+    db.LikedSongPublic.create(newLikedSong)
       .then(function(dbProperty) {
         // If saved successfully, send the the new Property document to the client
         // res.json(dbProperty);
