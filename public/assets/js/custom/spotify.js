@@ -39,7 +39,6 @@
                       </div>
                       <div class="item-action m-b" style="margin-top: 10px;">
                         <span spotify-song-id='${data.items[i].id}' class="btn btn-sm rounded primary add-to-playlist">Add to playlist</span>
-                        <span class="btn btn-sm rounded white">More info</span>
                       </div>
                       <div class="item-meta text-sm text-muted">
                           </div>
