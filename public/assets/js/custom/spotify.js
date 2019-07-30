@@ -112,6 +112,8 @@
       });
 
 
+      var currentSong = '';
+      var newSong = '';
       //make api call to get current playing song info
       setInterval(function(){
         $.ajax({
@@ -147,10 +149,17 @@
                 $('.btn-favorite.mejs-like-button').attr('data-spotify-song-title', data.item.name);
                 $('.btn-favorite.mejs-like-button').attr('data-spotify-track-id', data.item.id);
                 $('.btn-favorite.mejs-like-button').attr('data-spotify-image', data.item.album.images[0].url);
-                $('.btn-favorite.mejs-like-button').removeClass('is-like');
+                
+
+                currentSong = data.item.name;
+                if(currentSong !== newSong) {
+                    newSong = data.item.name;
+                    $('.btn-favorite.mejs-like-button').removeClass('is-like');
+                }
+                
                 // title: $(this).attr('data-spotify-song-title'),
                 // songID: $(this).attr('data-spotify-track-id'),
-                image: $(this).attr('data-spotify-image')
+                // image: $(this).attr('data-spotify-image')
                 // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
 
                 // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
