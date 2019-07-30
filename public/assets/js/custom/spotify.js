@@ -255,7 +255,7 @@
       }, intervalTimerForSidebarLikes);
 
 
-      setTimeout(function() {
+      setInterval(function() {
         var dbId = $('#app').data('dbid');
         //   $("#comment-input").val('');
         console.log(dbId);
@@ -268,24 +268,25 @@
             console.log(data);
 
             var html = '';
+            var likedSongs = data.likedSongs.reverse();
 
-            for(var i = 0; i < data.likedSongs.length; i++) {
-                var createdAt = moment(data.likedSongs[i].createdAt).fromNow();
+            for(var i = 0; i < likedSongs.length; i++) {
+                var createdAt = moment(likedSongs[i].createdAt).fromNow();
                 html += `
                     <div class="col-xs-4 col-sm-4 col-md-3">
-                        <div class="item r" data-id="item-10" data-src="http://api.soundcloud.com/tracks/237514750/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
+                        <div class="item r">
                             <div class="item-media ">
-                                <a href="track.detail.html" class="item-media-content" style="background-image: url(${data.likedSongs[i].image});"></a>
+                                <a class="item-media-content" style="background-image: url(${likedSongs[i].image});"></a>
                             </div>
                             <div class="item-info">
                                 <div class="item-title text-ellipsis">
-                                    <a href="track.detail.html">${data.likedSongs[i].title}</a>
+                                    <a>${likedSongs[i].title}</a>
                                 </div>
                                 <div class="item-title text-ellipsis">
                                     <a href="track.detail.html">Liked ${createdAt}</a>
                                 </div>
                                 <div class="item-author text-sm text-ellipsis hide">
-                                    <a href="artist.detail.html" class="text-muted">Postiljonen</a>
+                                    <a class="text-muted">Postiljonen</a>
                                 </div>
                                 <div class="item-meta text-sm text-muted">
                                 </div>
@@ -295,6 +296,7 @@
                 `
             }
             $('#liked-song-count').text(data.likedSongs.length);
+            $('#liked-songs-profile').empty();
             $('#liked-songs-profile').append(html);
           });
       }, intervalTimerForPersonalLikedSongs);

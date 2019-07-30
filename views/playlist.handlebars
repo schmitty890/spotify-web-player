@@ -93,9 +93,9 @@
             <div class="row item-list item-list-by m-b">
                 {{#each hbsObject.tracks}}
                     <div class="col-xs-12 {{this.track.id}}">
-                        <div class="item r" data-id="item-10" data-src="http://api.soundcloud.com/tracks/237514750/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
+                        <div class="item r">
                             <div class="item-media ">
-                                <a href="track.detail.html" class="item-media-content" style="background-image: url({{this.track.album.images.[0].url}});"></a>
+                                <a class="item-media-content" style="background-image: url({{this.track.album.images.[0].url}});"></a>
                                 {{!-- <div class="item-overlay center">
                                     <button  class="btn-playpause">Play</button>
                                 </div> --}}
@@ -107,10 +107,10 @@
                                     <div class="dropdown-menu pull-right black lt"></div>
                                 </div>
                                 <div class="item-title text-ellipsis">
-                                    <a href="track.detail.html">{{this.track.name}}</a>
+                                    <a>{{this.track.name}}</a>
                                 </div>
                                 <div class="item-author text-sm text-ellipsis hide">
-                                    <a href="artist.detail.html" class="text-muted">Postiljonen</a>
+                                    <a href="#" class="text-muted">Postiljonen</a>
                                 </div>
                                 <div class="item-meta text-sm text-muted">
                                 {{!-- <span class="item-meta-category"><a href="browse.html" class="label">Soul</a></span> --}}
@@ -127,7 +127,8 @@
                 
                                 <div class="item-action visible-list m-t-sm">
                                     {{!-- <a href="#" class="btn btn-xs white">Edit</a> --}}
-                                    <a href="#" data-spotify-id={{this.track.id}} class="delete-this-song btn btn-xs white" data-toggle="modal" data-target="#delete-modal">Remove from playlist</a>
+                                    <a href="#" data-spotify-id={{this.track.id}} class="delete-this-song btn btn-xs white" data-toggle="modal" data-target="#delete-modal">Remove</a>
+                                    <a href="#" data-spotify-id="{{this.track.id}}" data-spotify-song-title="{{this.track.name}}" data-spotify-image="{{this.track.album.images.[0].url}}" class="btn-favorite btn btn-xs white">Like this song</a>
                                 </div>
                             </div>
                         </div>
