@@ -31,14 +31,14 @@
                 <div class="col-xs-12 ${data.items[i].id}">
                   <div class="item r" data-id="item-5" data-src="http://streaming.radionomy.com/JamendoLounge">
                     <div class="item-media ">
-                      <a href="track.detail.html" class="item-media-content" style="background-image: url(${data.items[i].album.images[0].url});"></a>
+                      <a class="item-media-content" style="background-image: url(${data.items[i].album.images[0].url});"></a>
                     </div>
                     <div class="item-info">
                       <div class="item-title text-ellipsis">
-                        <a href="track.detail.html">${data.items[i].name}</a>
+                        <a>${data.items[i].name}</a>
                       </div>
                       <div class="item-author text-sm text-ellipsis ">
-                        <a href="artist.detail.html" class="text-muted">${data.items[i].artists[0].name}</a>
+                        <a class="text-muted">${data.items[i].artists[0].name}</a>
                       </div>
                       <div class="item-action m-b" style="margin-top: 10px;">
                         <span spotify-song-id='${data.items[i].id}' class="btn btn-sm rounded primary add-to-playlist">Add to playlist</span>
@@ -234,11 +234,11 @@
                 <div class="col-xs-12">
                     <div class="item r" data-id="item-3" data-src="http://api.soundcloud.com/tracks/79031167/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
                         <div class="item-media ">
-                            <a href="track.detail.html" class="item-media-content" style="background-image: url('${data[i].image}');"></a>
+                            <a class="item-media-content" style="background-image: url('${data[i].image}');"></a>
                         </div>
                         <div class="item-info">
                             <div class="item-title text-ellipsis">
-                                <a href="track.detail.html">${data[i].title}</a>
+                                <a>${data[i].title}</a>
                             </div>
                             <div class="item-author text-sm text-ellipsis ">
                                 <a href="artist.detail.html" class="text-muted">Liked by ${data[i].userFirstName} ${createdAt}</a>
@@ -283,7 +283,7 @@
                                     <a>${likedSongs[i].title}</a>
                                 </div>
                                 <div class="item-title text-ellipsis">
-                                    <a href="track.detail.html">Liked ${createdAt}</a>
+                                    <a>Liked ${createdAt}</a>
                                 </div>
                                 <div class="item-author text-sm text-ellipsis hide">
                                     <a class="text-muted">Postiljonen</a>
