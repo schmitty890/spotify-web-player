@@ -199,7 +199,7 @@ window.mep = window.mep || {};
 
 				track.thumb = track.thumb || {};
 				hasArtwork = 'undefined' !== typeof track.thumb.src && '' !== track.thumb.src;
-				$artwork.attr('href', track.link);
+				// $artwork.attr('href', track.link);
 				// Set the artwork src and toggle depending on if the URL is empty.
 				$artwork.css( 'background-image', 'url(' + track.thumb.src + ')' ).toggle( hasArtwork );
 				$artwork.closest( player.options.mepSelectors.playlist ).toggleClass( 'has-artwork', hasArtwork );
@@ -225,8 +225,8 @@ window.mep = window.mep || {};
 				track.meta = track.meta || {};
 				track.title = track.title || {};
 				track.link = track.link || {};
-				$author.html(  '<a href="'+track.meta.authorlink+'">'+track.meta.author+ '</a>' );
-				$title.html( '<a href="'+track.link+'">'+track.title+ '</a>');
+				$author.html(  '<a>'+track.meta.author+ '</a>' );
+				$title.html( '<a>'+track.title+ '</a>');
 			});
 		}
 	});
