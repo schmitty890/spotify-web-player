@@ -147,6 +147,7 @@
                 $('.btn-favorite.mejs-like-button').attr('data-spotify-song-title', data.item.name);
                 $('.btn-favorite.mejs-like-button').attr('data-spotify-track-id', data.item.id);
                 $('.btn-favorite.mejs-like-button').attr('data-spotify-image', data.item.album.images[0].url);
+                $('.btn-favorite.mejs-like-button').removeClass('is-like');
                 // title: $(this).attr('data-spotify-song-title'),
                 // songID: $(this).attr('data-spotify-track-id'),
                 image: $(this).attr('data-spotify-image')
