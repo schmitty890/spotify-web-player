@@ -1,4 +1,7 @@
 (function($) {
+    var intervalTimerForPersonalLikedSongs = 10000;
+    var intervalTimerForCurrentlyPlayingSong = 1000;
+    var intervalTimerForSidebarLikes = 10000;
     // when search is entered, search spotify api and return results on the page so user can add to playlists or view more detail
     $(document).on('click', '#search-that-info', function(e) {
         e.preventDefault();
@@ -110,53 +113,53 @@
 
 
       //make api call to get current playing song info
-    //   setInterval(function(){
-    //     $.ajax({
-    //         method: "GET",
-    //         url: "/currently-playing"
-    //       }).done(function(data) {
-    //           console.log('our data');
-    //           console.log(data);
-    //         //   console.log(Object.keys(data).length);
-    //           if(Object.keys(data).length === 0) { // if no song is paying
-    //             $('.mejs-track-title a').text('no song is currently playing');
-    //             $('.mejs-track-author a').text('');
-    //           } else { // if song is playing
-    //             //   $('.' + data).hide();
-    //             $('.mejs-track-title a').text(data.item.name);
-    //             $('.mejs-track-author a').text(data.item.artists[0].name);
-    //             $('.mejs-track-artwork').css('background-image', 'url(' + data.item.album.images[0].url + ')')
-    //             var millisToMinutesAndSeconds = function (millis) {
-    //                 var minutes = Math.floor(millis / 60000);
-    //                 var seconds = ((millis % 60000) / 1000).toFixed(0);
-    //                 return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-    //             }
-    //             $('.mejs-currenttime').text(millisToMinutesAndSeconds(data.progress_ms));
-    //             $('.mejs-duration').text(millisToMinutesAndSeconds(data.item.duration_ms));
-    //             var totalSongTime = data.item.duration_ms;
-    //             var currentSongTime = data.progress_ms;
-    //             var percentPlayed = (currentSongTime / totalSongTime) * 100;
-    //             console.log(percentPlayed);
-    //             // $('.mejs-time-rail').css({'background': 'red'});
-    //             // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
-    //             $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
-    //             $('.mejs-time-rail').css({'background': '#02b875'});
-    //             $('.btn-favorite.mejs-like-button').attr('data-spotify-song-title', data.item.name);
-    //             $('.btn-favorite.mejs-like-button').attr('data-spotify-track-id', data.item.id);
-    //             $('.btn-favorite.mejs-like-button').attr('data-spotify-image', data.item.album.images[0].url);
-    //             // title: $(this).attr('data-spotify-song-title'),
-    //             // songID: $(this).attr('data-spotify-track-id'),
-    //             image: $(this).attr('data-spotify-image')
-    //             // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
+      setInterval(function(){
+        $.ajax({
+            method: "GET",
+            url: "/currently-playing"
+          }).done(function(data) {
+              console.log('our data');
+              console.log(data);
+            //   console.log(Object.keys(data).length);
+              if(Object.keys(data).length === 0) { // if no song is paying
+                $('.mejs-track-title a').text('no song is currently playing');
+                $('.mejs-track-author a').text('');
+              } else { // if song is playing
+                //   $('.' + data).hide();
+                $('.mejs-track-title a').text(data.item.name);
+                $('.mejs-track-author a').text(data.item.artists[0].name);
+                $('.mejs-track-artwork').css('background-image', 'url(' + data.item.album.images[0].url + ')')
+                var millisToMinutesAndSeconds = function (millis) {
+                    var minutes = Math.floor(millis / 60000);
+                    var seconds = ((millis % 60000) / 1000).toFixed(0);
+                    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+                }
+                $('.mejs-currenttime').text(millisToMinutesAndSeconds(data.progress_ms));
+                $('.mejs-duration').text(millisToMinutesAndSeconds(data.item.duration_ms));
+                var totalSongTime = data.item.duration_ms;
+                var currentSongTime = data.progress_ms;
+                var percentPlayed = (currentSongTime / totalSongTime) * 100;
+                console.log(percentPlayed);
+                // $('.mejs-time-rail').css({'background': 'red'});
+                // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
+                $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
+                $('.mejs-time-rail').css({'background': '#02b875'});
+                $('.btn-favorite.mejs-like-button').attr('data-spotify-song-title', data.item.name);
+                $('.btn-favorite.mejs-like-button').attr('data-spotify-track-id', data.item.id);
+                $('.btn-favorite.mejs-like-button').attr('data-spotify-image', data.item.album.images[0].url);
+                // title: $(this).attr('data-spotify-song-title'),
+                // songID: $(this).attr('data-spotify-track-id'),
+                image: $(this).attr('data-spotify-image')
+                // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
 
-    //             // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
-    //             // $('.mejs-time-rail').width(percentPlayed);
+                // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
+                // $('.mejs-time-rail').width(percentPlayed);
 
-    //         //   window.location.href = window.location.href;
-    //           }
+            //   window.location.href = window.location.href;
+              }
 
-    //       })          
-    //   }, 5000);
+          })          
+      }, intervalTimerForCurrentlyPlayingSong);
 
       $('.mejs-button').hide();
 
@@ -167,6 +170,7 @@
       // when users click add to playlist button, send the song id to spotify api to add to our playlist
       $(document).on('click', '.btn-favorite', function(e) {
         e.preventDefault();
+        $(this).css({'color': '#02b875'});
         console.log('liked song!');
         // var data = {
         //     title: $(this).attr('data-spotify-song-title'),
@@ -204,16 +208,41 @@
         });
       });
 
-      //make api call to get current playing song info
-    //   setInterval(function(){
-    //     $.ajax({
-    //         method: "GET",
-    //         url: "/lastestLikedSongs"
-    //       }).done(function(data) {
-    //           console.log('our data');
-    //           console.log(data);
-    //       })
-    //   }, 5000);
+      // make api call to get the latest 5 songs all users liked - displayed in side bar
+      setInterval(function(){
+        $.ajax({
+            method: "GET",
+            url: "/lastestLikedSongs"
+          }).done(function(data) {
+              console.log('our data');
+              console.log(data);
+              var html = '';
+
+              for(var i = 0; i < data.length; i++) {
+                var createdAt = moment(data[i].createdAt).fromNow();
+                html += `
+                <div class="col-xs-12">
+                    <div class="item r" data-id="item-3" data-src="http://api.soundcloud.com/tracks/79031167/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
+                        <div class="item-media ">
+                            <a href="track.detail.html" class="item-media-content" style="background-image: url('${data[i].image}');"></a>
+                        </div>
+                        <div class="item-info">
+                            <div class="item-title text-ellipsis">
+                                <a href="track.detail.html">${data[i].title}</a>
+                            </div>
+                            <div class="item-author text-sm text-ellipsis ">
+                                <a href="artist.detail.html" class="text-muted">Liked by ${data[i].userFirstName} ${createdAt}</a>
+                            </div>
+            
+            
+                        </div>
+                    </div>
+                </div>`;
+              }
+              $('#latest-liked-songs-global').empty();
+              $('#latest-liked-songs-global').append(html);
+          })
+      }, intervalTimerForSidebarLikes);
 
 
       setTimeout(function() {
@@ -258,7 +287,7 @@
             $('#liked-song-count').text(data.likedSongs.length);
             $('#liked-songs-profile').append(html);
           });
-      }, 5000);
+      }, intervalTimerForPersonalLikedSongs);
 
 
 
