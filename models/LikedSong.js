@@ -8,6 +8,9 @@ var LikedSongSchema = new Schema({
     user: {
         type: String
     },
+    userFirstName: {
+        type: String
+    },
     title: {
         type: String
     },

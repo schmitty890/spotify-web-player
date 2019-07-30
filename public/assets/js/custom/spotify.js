@@ -110,53 +110,53 @@
 
 
       //make api call to get current playing song info
-      setInterval(function(){
-        $.ajax({
-            method: "GET",
-            url: "/currently-playing"
-          }).done(function(data) {
-              console.log('our data');
-              console.log(data);
-            //   console.log(Object.keys(data).length);
-              if(Object.keys(data).length === 0) { // if no song is paying
-                $('.mejs-track-title a').text('no song is currently playing');
-                $('.mejs-track-author a').text('');
-              } else { // if song is playing
-                //   $('.' + data).hide();
-                $('.mejs-track-title a').text(data.item.name);
-                $('.mejs-track-author a').text(data.item.artists[0].name);
-                $('.mejs-track-artwork').css('background-image', 'url(' + data.item.album.images[0].url + ')')
-                var millisToMinutesAndSeconds = function (millis) {
-                    var minutes = Math.floor(millis / 60000);
-                    var seconds = ((millis % 60000) / 1000).toFixed(0);
-                    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-                }
-                $('.mejs-currenttime').text(millisToMinutesAndSeconds(data.progress_ms));
-                $('.mejs-duration').text(millisToMinutesAndSeconds(data.item.duration_ms));
-                var totalSongTime = data.item.duration_ms;
-                var currentSongTime = data.progress_ms;
-                var percentPlayed = (currentSongTime / totalSongTime) * 100;
-                console.log(percentPlayed);
-                // $('.mejs-time-rail').css({'background': 'red'});
-                // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
-                $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
-                $('.mejs-time-rail').css({'background': '#02b875'});
-                $('.btn-favorite.mejs-like-button').attr('data-spotify-song-title', data.item.name);
-                $('.btn-favorite.mejs-like-button').attr('data-spotify-track-id', data.item.id);
-                $('.btn-favorite.mejs-like-button').attr('data-spotify-image', data.item.album.images[0].url);
-                // title: $(this).attr('data-spotify-song-title'),
-                // songID: $(this).attr('data-spotify-track-id'),
-                image: $(this).attr('data-spotify-image')
-                // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
+    //   setInterval(function(){
+    //     $.ajax({
+    //         method: "GET",
+    //         url: "/currently-playing"
+    //       }).done(function(data) {
+    //           console.log('our data');
+    //           console.log(data);
+    //         //   console.log(Object.keys(data).length);
+    //           if(Object.keys(data).length === 0) { // if no song is paying
+    //             $('.mejs-track-title a').text('no song is currently playing');
+    //             $('.mejs-track-author a').text('');
+    //           } else { // if song is playing
+    //             //   $('.' + data).hide();
+    //             $('.mejs-track-title a').text(data.item.name);
+    //             $('.mejs-track-author a').text(data.item.artists[0].name);
+    //             $('.mejs-track-artwork').css('background-image', 'url(' + data.item.album.images[0].url + ')')
+    //             var millisToMinutesAndSeconds = function (millis) {
+    //                 var minutes = Math.floor(millis / 60000);
+    //                 var seconds = ((millis % 60000) / 1000).toFixed(0);
+    //                 return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    //             }
+    //             $('.mejs-currenttime').text(millisToMinutesAndSeconds(data.progress_ms));
+    //             $('.mejs-duration').text(millisToMinutesAndSeconds(data.item.duration_ms));
+    //             var totalSongTime = data.item.duration_ms;
+    //             var currentSongTime = data.progress_ms;
+    //             var percentPlayed = (currentSongTime / totalSongTime) * 100;
+    //             console.log(percentPlayed);
+    //             // $('.mejs-time-rail').css({'background': 'red'});
+    //             // $('.mejs-time-rail').css({'width': percentPlayed + '% !important'});
+    //             $('.mejs-time-rail').attr('style', 'width: '+ percentPlayed +'% !important');
+    //             $('.mejs-time-rail').css({'background': '#02b875'});
+    //             $('.btn-favorite.mejs-like-button').attr('data-spotify-song-title', data.item.name);
+    //             $('.btn-favorite.mejs-like-button').attr('data-spotify-track-id', data.item.id);
+    //             $('.btn-favorite.mejs-like-button').attr('data-spotify-image', data.item.album.images[0].url);
+    //             // title: $(this).attr('data-spotify-song-title'),
+    //             // songID: $(this).attr('data-spotify-track-id'),
+    //             image: $(this).attr('data-spotify-image')
+    //             // $('.mejs-shuffle-button, .mejs-repeat-button, .mejs-volume-button, .mejs-playpause-button, .mejs-previous-button, .mejs-next-button').hide();
 
-                // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
-                // $('.mejs-time-rail').width(percentPlayed);
+    //             // $('.mejs-time-rail').css("width: " + percentPlayed + "% !important;");
+    //             // $('.mejs-time-rail').width(percentPlayed);
 
-            //   window.location.href = window.location.href;
-              }
+    //         //   window.location.href = window.location.href;
+    //           }
 
-          })          
-      }, 5000);
+    //       })          
+    //   }, 5000);
 
       $('.mejs-button').hide();
 
@@ -168,22 +168,22 @@
       $(document).on('click', '.btn-favorite', function(e) {
         e.preventDefault();
         console.log('liked song!');
-        var data = {
-            title: $(this).attr('data-spotify-song-title'),
-            songID: $(this).attr('data-spotify-track-id'),
-            image: $(this).attr('data-spotify-image')
-        }
+        // var data = {
+        //     title: $(this).attr('data-spotify-song-title'),
+        //     songID: $(this).attr('data-spotify-track-id'),
+        //     image: $(this).attr('data-spotify-image')
+        // }
     
-        $.ajax({
-          method: "POST",
-          url: "/like-song",
-          data: data
-        }).done(function(data) {
-            console.log('our data')
-            console.log(data);
-            // $('.' + data).hide();
-        //   window.location.href = window.location.href;
-        });
+        // $.ajax({
+        //   method: "POST",
+        //   url: "/like-song",
+        //   data: data
+        // }).done(function(data) {
+        //     console.log('our data')
+        //     console.log(data);
+        //     // $('.' + data).hide();
+        // //   window.location.href = window.location.href;
+        // });
 
         var dbId = $(this).data('dbid');
         var data = {
@@ -205,20 +205,21 @@
       });
 
       //make api call to get current playing song info
-      setInterval(function(){
-        $.ajax({
-            method: "GET",
-            url: "/lastestLikedSongs"
-          }).done(function(data) {
-              console.log('our data');
-              console.log(data);
-          })
-      }, 5000);
+    //   setInterval(function(){
+    //     $.ajax({
+    //         method: "GET",
+    //         url: "/lastestLikedSongs"
+    //       }).done(function(data) {
+    //           console.log('our data');
+    //           console.log(data);
+    //       })
+    //   }, 5000);
 
 
       setTimeout(function() {
         var dbId = $('#app').data('dbid');
         //   $("#comment-input").val('');
+        console.log(dbId);
           $.ajax({
             method: "GET",
             url: "/liked-songs/" + dbId
@@ -257,7 +258,7 @@
             $('#liked-song-count').text(data.likedSongs.length);
             $('#liked-songs-profile').append(html);
           });
-      }, 3000);
+      }, 5000);
 
 
 

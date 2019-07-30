@@ -86,6 +86,8 @@ module.exports = function (app) {
       if (err) {
         res.send(err);
       }
+      console.log('--------------------------!!!!!!!!!!!!!!!!!!!');
+      console.log(song);
       res.json(song);
     }).sort({ $natural: -1 }).limit(5);
   });
@@ -461,34 +463,42 @@ spotifyApi.searchTracks('Ransom')
   });
 
   // Endpoint for saving a liked song
-  app.post("/like-song", passportConfig.isAuthenticated, function(req, res) {
-    // console.log(req.body);
-    var newLikedSong = {
-      title: req.body.title,
-      songID: req.body.songID,
-      image: req.body.image,
-      user: req.user.firstName
-    }
-    // console.log(newLikedSong);
-    // Create a new liked song
-    db.LikedSongPublic.create(newLikedSong)
-      .then(function(dbProperty) {
-        // If saved successfully, send the the new Property document to the client
-        // res.json(dbProperty);
-        res.send('you saved a new song!');
-        // res.redirect('/my-properties');
-      })
-      .catch(function(err) {
-        res.json(err);
-      });
-  });
+  // app.post("/like-song", passportConfig.isAuthenticated, function(req, res) {
+  //   // console.log(req.body);
+  //   var newLikedSong = {
+  //     title: req.body.title,
+  //     songID: req.body.songID,
+  //     image: req.body.image,
+  //     user: req.user.firstName
+  //   }
+  //   console.log('THE NEWLIKEDSONG PUBLIC');
+  //   console.log(newLikedSong);
+  //   // Create a new liked song
+  //   db.LikedSongPublic.create(newLikedSong)
+  //     .then(function(dbNewLikedSongPublic) {
+  //       // If saved successfully, send the the new Property document to the client
+  //       // res.json(dbProperty);
+  //       res.send('you saved a new song!');
+  //       // res.redirect('/my-properties');
+  //     })
+  //     .catch(function(err) {
+  //       res.json(err);
+  //     });
+  // });
 
   // Endpoint for saving a liked song
   app.post("/like-song-by-user", passportConfig.isAuthenticated, function(req, res) {
     console.log(req.body);
+    var data = {
+      user: req.body.user,
+      userFirstName: req.user.firstName,
+      title: req.body.title,
+      songID: req.body.songID,
+      image: req.body.image
+    }
 
     // Create a new comment and pass the req.body to the entry
-    db.LikedSong.create(req.body)
+    db.LikedSong.create(data)
       .then(function(dbLike) {
         // if like creation success, find like with req.body.user match, associate it with the comment body sent from app.js by pushing it to like array
         // new true returns updated article

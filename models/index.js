@@ -5,5 +5,6 @@ module.exports = {
   Property: require("./Property"),
   Note: require("./Note"),
   Faq: require("./FAQ"),
-  LikedSong: require("./LikedSong")
+  LikedSong: require("./LikedSong"),
+  LikedSongPublic: require("./LikedSongPublic")
 };
