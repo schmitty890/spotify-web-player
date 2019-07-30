@@ -241,7 +241,7 @@
                                 <a>${data[i].title}</a>
                             </div>
                             <div class="item-author text-sm text-ellipsis ">
-                                <a href="artist.detail.html" class="text-muted">Liked by ${data[i].userFirstName} ${createdAt}</a>
+                                <a class="text-muted">Liked by ${data[i].userFirstName} ${createdAt}</a>
                             </div>
             
             
