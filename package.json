@@ -62,7 +62,7 @@
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.8.1",
     "popper.js": "^1.14.3",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "request": "^2.85.0",
     "run-sequence": "^2.2.1",
     "spotify-web-api-node": "^4.0.0",
